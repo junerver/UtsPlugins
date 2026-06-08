@@ -1,0 +1,33 @@
+/* 农行e支付插件错误处理 */
+import { ABCEPayErrorCode, ABCEPayError } from "./interface.uts"
+
+/**
+ * 错误主题
+ */
+export const UniErrorSubject = 'jkr-abc-epay'
+
+/**
+ * 错误信息映射
+ */
+export const ABCEPayErrors: Map<ABCEPayErrorCode, string> = new Map([
+  [9010001, '支付链接无效'],
+  [9010002, '农行APP未安装'],
+  [9010003, '支付失败'],
+  [9010004, '支付取消'],
+  [9010005, '网络错误'],
+  [9010006, '参数错误']
+])
+
+/**
+ * 错误对象实现
+ */
+export class ABCEPayFailImpl extends UniError implements ABCEPayError {
+  override errCode: ABCEPayErrorCode
+
+  constructor(errCode: ABCEPayErrorCode) {
+    super()
+    this.errSubject = UniErrorSubject
+    this.errCode = errCode
+    this.errMsg = ABCEPayErrors.get(errCode) ?? '未知错误'
+  }
+}

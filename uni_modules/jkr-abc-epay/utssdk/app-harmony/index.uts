@@ -1,0 +1,145 @@
+/**
+ * 农行e支付鸿蒙平台实现
+ * 基于ABCEPay.har SDK
+ */
+
+import { 
+  ABCEPayCallPayOptions, 
+  ABCEPayStartBankABCOptions, 
+  ABCEPayResult,
+  ABCEPayFail
+} from '../interface.uts'
+import { ABCEPayFailImpl } from '../unierror'
+
+// 导入农行支付SDK
+import { ABCEPayApi } from "@abc/abcepay"
+
+// 导入鸿蒙bundleManager模块
+import { bundleManager } from '@kit.AbilityKit'
+import { BusinessError } from '@kit.BasicServicesKit'
+
+/**
+ * 农行支付API实现
+ */
+export const callPay = function(options: ABCEPayCallPayOptions): void {
+  try {
+    // 验证参数
+    if (!options.url || options.url.trim().length === 0) {
+      const error = new ABCEPayFailImpl(9010001) // 支付链接无效
+      options.fail?.({
+        errCode: error.errCode,
+        errMsg: error.errMsg
+      })
+      options.complete?.(error)
+      return
+    }
+
+    // 调用农行支付SDK（含中间页面）
+    ABCEPayApi.callPay(
+      options.url,
+      options.isRelease ?? false,
+      (err: string) => {
+        // 支付失败回调
+        const error = new ABCEPayFailImpl(9010003) // 支付失败
+        options.fail?.({
+          errCode: error.errCode,
+          errMsg: err || error.errMsg
+        })
+        options.complete?.(error)
+      },
+      (suc: string) => {
+        // 支付成功回调
+        const result: ABCEPayResult = {
+          message: suc || '支付成功',
+          orderId: null,
+          transactionId: null
+        }
+        options.success?.(result)
+        options.complete?.(result)
+      }
+    )
+  } catch (e) {
+    console.error('农行支付调用异常:', e)
+    const error = new ABCEPayFailImpl(9010003) // 支付失败
+    options.fail?.({
+      errCode: error.errCode,
+      errMsg: error.errMsg
+    })
+    options.complete?.(error)
+  }
+}
+
+export const startBankABC = function(options: ABCEPayStartBankABCOptions): void {
+  try {
+    // 验证参数
+    if (!options.method || options.method.trim().length === 0) {
+      const error = new ABCEPayFailImpl(9010006) // 参数错误
+      options.fail?.({
+        errCode: error.errCode,
+        errMsg: '支付方式不能为空'
+      })
+      options.complete?.(error)
+      return
+    }
+
+    if (!options.token || options.token.trim().length === 0) {
+      const error = new ABCEPayFailImpl(9010006) // 参数错误
+      options.fail?.({
+        errCode: error.errCode,
+        errMsg: '订单号不能为空'
+      })
+      options.complete?.(error)
+      return
+    }
+
+    // 调用农行支付SDK（不含中间页面）
+    ABCEPayApi.startBankABC(
+      options.method,
+      options.token,
+      options.isRelease ?? false,
+      (err: string) => {
+        // 支付失败回调
+        const error = new ABCEPayFailImpl(9010003) // 支付失败
+        options.fail?.({
+          errCode: error.errCode,
+          errMsg: err || error.errMsg
+        })
+        options.complete?.(error)
+      },
+      (suc: string) => {
+        // 支付成功回调
+        const result: ABCEPayResult = {
+          message: suc || '支付成功',
+          orderId: null,
+          transactionId: null
+        }
+        options.success?.(result)
+        options.complete?.(result)
+      }
+    )
+  } catch (e) {
+    console.error('农行支付调用异常:', e)
+    const error = new ABCEPayFailImpl(9010003) // 支付失败
+    options.fail?.({
+      errCode: error.errCode,
+      errMsg: error.errMsg
+    })
+    options.complete?.(error)
+  }
+}
+
+/**
+ * 检查农行APP是否已安装
+ * 使用 bundleManager.canOpenLink 通过 URL scheme 判断
+ * 注意：需要在应用的 entry 模块 module.json5 中配置 querySchemes: ["bankabc"]
+ */
+export const checkInstall = function(): boolean {
+  try {
+    const canOpen = bundleManager.canOpenLink('bankabc://')
+	console.log('检查农行APP安装状态：:', canOpen)
+    return canOpen
+  } catch (e) {
+    console.error('检查农行APP安装状态异常:', e)
+    return false
+  }
+}

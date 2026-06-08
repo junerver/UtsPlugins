@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+oh_modules/
+
+# Build output
+unpackage/
+dist/
+build/
+.hvigor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

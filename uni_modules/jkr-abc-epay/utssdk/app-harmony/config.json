@@ -1,0 +1,5 @@
+{  
+   "dependencies": {  
+	   "@abc/abcepay": "./libs/ABCEPay.har"
+   }  
+}
