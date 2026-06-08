@@ -81,27 +81,24 @@
 			<view class="code-card">
 				<view class="code-title">1. 检查安装状态</view>
 				<view class="code-block">
-					<text class="code-text">
-// #ifdef APP-HARMONY
+					<text class="code-text">// #ifdef APP-HARMONY
 import { checkInstall } from "@/uni_modules/jkr-abc-epay"
 // #endif
 
 // 检查农行APP是否安装
-const isInstalled = checkInstall()
-					</text>
+const isInstalled = checkInstall()</text>
 				</view>
 			</view>
 
 			<view class="code-card">
 				<view class="code-title">2. 调起支付（含中间页面）</view>
 				<view class="code-block">
-					<text class="code-text">
-// #ifdef APP-HARMONY
+					<text class="code-text">// #ifdef APP-HARMONY
 import { callPay } from "@/uni_modules/jkr-abc-epay"
 // #endif
 
 callPay({
-  url: "http://example.com/pay?TOKEN=xxx",
+  url: "http://example.com/pay?TOKEN=YOUR_TOKEN",
   isRelease: false,
   success: (res) => {
     console.log("支付成功", res.message)
@@ -109,16 +106,14 @@ callPay({
   fail: (err) => {
     console.error("支付失败", err.errMsg)
   }
-})
-					</text>
+})</text>
 				</view>
 			</view>
 
 			<view class="code-card">
 				<view class="code-title">3. 调起支付（不含中间页面）</view>
 				<view class="code-block">
-					<text class="code-text">
-// #ifdef APP-HARMONY
+					<text class="code-text">// #ifdef APP-HARMONY
 import { startBankABC } from "@/uni_modules/jkr-abc-epay"
 // #endif
 
@@ -132,8 +127,7 @@ startBankABC({
   fail: (err) => {
     console.error("支付失败", err.errMsg)
   }
-})
-					</text>
+})</text>
 				</view>
 			</view>
 		</view>
