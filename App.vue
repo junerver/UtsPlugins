@@ -1,17 +1,22 @@
 <script>
 	export default {
-		onLaunch: function() {
+		onLaunch() {
 			console.log('App Launch')
 		},
-		onShow: function() {
+		onShow() {
 			console.log('App Show')
 		},
-		onHide: function() {
+		onHide() {
 			console.log('App Hide')
 		}
 	}
 </script>
 
-<style>
-	/*每个页面公共css */
+<style lang="scss">
+	@import 'uview-plus/index.scss';
+	
+	/* 全局样式 */
+	page {
+		background-color: #f5f6f7;
+	}
 </style>

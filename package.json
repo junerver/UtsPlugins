@@ -1,0 +1,9 @@
+{
+	"name": "uts-plugins",
+	"version": "1.0.0",
+	"description": "uniapp 工程的 uts 插件合集",
+	"main": "main.js",
+	"dependencies": {
+		"uview-plus": "^3.3.69"
+	}
+}
