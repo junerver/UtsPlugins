@@ -220,7 +220,7 @@ startBankABC({
 	// #endif
 	
 	const installResult = ref(null)
-	const payUrl = ref('http://10.230.132.250:8530/mpay/?TOKEN=xxx')
+	const payUrl = ref('')
 	const isRelease = ref(false)
 	const payMethod = ref('pay')
 	const payToken = ref('')
