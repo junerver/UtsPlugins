@@ -1,0 +1,22 @@
+{
+  "_comment": "此文件由 scripts/generate-manifest.js 自动生成，请勿手动编辑",
+  "generated_at": "2026-06-09T06:06:59.972Z",
+  "plugins": {
+    "jkr-abc-epay": {
+      "description": "农行e支付鸿蒙SDK封装，支持农行掌银支付功能",
+      "version": "1.0.4",
+      "files": [
+        "changelog.md",
+        "index.d.ts",
+        "package.json",
+        "readme.md",
+        "utssdk/app-harmony/config.json",
+        "utssdk/app-harmony/index.uts",
+        "utssdk/app-harmony/libs/ABCEPay.har",
+        "utssdk/app-harmony/module.json5",
+        "utssdk/interface.uts",
+        "utssdk/unierror.uts"
+      ]
+    }
+  }
+}

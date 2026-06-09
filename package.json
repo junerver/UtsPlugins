@@ -1,11 +1,37 @@
 {
-	"name": "uts-plugins",
-	"version": "1.0.0",
-	"description": "uniapp 工程的 uts 插件合集",
-	"main": "main.js",
-	"dependencies": {
-		"clipboard": "^2.0.11",
-		"dayjs": "^1.11.21",
-		"uview-plus": "^3.3.69"
-	}
+  "name": "uts-plugins",
+  "version": "1.0.0",
+  "description": "uniapp 工程的 uts 插件合集",
+  "main": "main.js",
+  "scripts": {
+    "generate": "node scripts/generate-manifest.js",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "clipboard": "^2.0.11",
+    "dayjs": "^1.11.21",
+    "uview-plus": "^3.3.69"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junerver/UtsPlugins.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/junerver/UtsPlugins/issues"
+  },
+  "homepage": "https://github.com/junerver/UtsPlugins#readme",
+  "lint-staged": {
+    "uni_modules/**/*": [
+      "node scripts/generate-manifest.js",
+      "git add plugins.json"
+    ]
+  }
 }
