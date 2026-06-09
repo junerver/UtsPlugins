@@ -7,15 +7,26 @@
 
 const fs = require('fs')
 const path = require('path')
+const crypto = require('crypto')
 
 const UNI_MODULES_DIR = path.join(__dirname, '..', 'uni_modules')
 const OUTPUT_FILE = path.join(__dirname, '..', 'plugins.json')
 
 /**
- * 递归获取目录下的所有文件（相对路径）
+ * 计算文件的 MD5 hash
+ * @param {string} filePath - 文件路径
+ * @returns {string} MD5 hash
+ */
+function getFileHash(filePath) {
+  const content = fs.readFileSync(filePath)
+  return crypto.createHash('md5').update(content).digest('hex')
+}
+
+/**
+ * 递归获取目录下的所有文件（相对路径 + MD5 hash）
  * @param {string} dir - 目录路径
  * @param {string} prefix - 前缀（用于计算相对路径）
- * @returns {string[]} 文件路径列表
+ * @returns {object[]} 文件信息列表 { path, hash }
  */
 function getFilesRecursive(dir, prefix = '') {
   const files = []
@@ -30,7 +41,10 @@ function getFilesRecursive(dir, prefix = '') {
       // 递归处理子目录
       files.push(...getFilesRecursive(fullPath, relativePath))
     } else if (stat.isFile()) {
-      files.push(relativePath)
+      files.push({
+        path: relativePath,
+        hash: getFileHash(fullPath)
+      })
     }
   }
 

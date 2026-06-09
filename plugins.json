@@ -1,20 +1,47 @@
 {
   "_comment": "此文件由 scripts/generate-manifest.js 自动生成，请勿手动编辑",
-  "generated_at": "2026-06-09T08:39:27.824Z",
+  "generated_at": "2026-06-09T09:20:09.613Z",
   "plugins": {
     "jkr-abc-epay": {
       "description": "农行e支付鸿蒙SDK封装，支持农行掌银支付功能",
       "version": "1.0.4",
       "files": [
-        "changelog.md",
-        "package.json",
-        "readme.md",
-        "utssdk/app-harmony/config.json",
-        "utssdk/app-harmony/index.uts",
-        "utssdk/app-harmony/libs/ABCEPay.har",
-        "utssdk/app-harmony/module.json5",
-        "utssdk/interface.uts",
-        "utssdk/unierror.uts"
+        {
+          "path": "changelog.md",
+          "hash": "58704708fab383999adf69c997d25e03"
+        },
+        {
+          "path": "package.json",
+          "hash": "b634d513f7cf6ea90286c6e10b5d3f54"
+        },
+        {
+          "path": "readme.md",
+          "hash": "6406be417446b0d13a7976c7a3c41c31"
+        },
+        {
+          "path": "utssdk/app-harmony/config.json",
+          "hash": "7ba19c76c30956ec4a81d3e200c0cb50"
+        },
+        {
+          "path": "utssdk/app-harmony/index.uts",
+          "hash": "e90007455867d7630740743078858ecd"
+        },
+        {
+          "path": "utssdk/app-harmony/libs/ABCEPay.har",
+          "hash": "6ad1502ac3e035c4eff85e989f9fc3f6"
+        },
+        {
+          "path": "utssdk/app-harmony/module.json5",
+          "hash": "f68c506c3b8b7fb78126f3222151e4d7"
+        },
+        {
+          "path": "utssdk/interface.uts",
+          "hash": "53f488ae52bc59c31d973e28ca64087f"
+        },
+        {
+          "path": "utssdk/unierror.uts",
+          "hash": "0928825b2424d5ca9c7c2aec1b94ab77"
+        }
       ]
     }
   }
