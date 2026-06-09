@@ -1,14 +1,11 @@
 /**
  * 农行e支付插件TypeScript声明
+ * @version 1.0.4
  */
 
 interface ABCEPayResult {
   /** 支付结果信息 */
-  message: string
-  /** 订单号 */
-  orderId: string | null
-  /** 交易流水号 */
-  transactionId: string | null
+  suc: string
 }
 
 interface ABCEPayFail {
@@ -64,22 +61,38 @@ interface ABCEPayApi {
    * @returns 是否已安装
    */
   checkInstall(): boolean
+
+  /**
+   * 检查SDK是否正确注入
+   * 用于前端快速验证 HAR 是否正确加载
+   * @returns SDK是否可用
+   */
+  checkSDK(): boolean
+
+  /**
+   * 获取插件版本号（同步）
+   * @returns 版本号字符串，如 "1.0.4"
+   */
+  getVersion(): string
 }
 
 declare class Uni {
   /**
-   * 调起农行支付（含中间页面）
-   * @param options 支付选项
+   * 农行e支付API
    * @example
    * ```ts
+   * // 检查SDK
+   * const ok = uni.abcEpay.checkSDK()
+   * 
+   * // 获取版本
+   * const version = uni.abcEpay.getVersion()
+   * console.log('版本:', version)
+   * 
+   * // 调起支付
    * uni.abcEpay.callPay({
    *   url: 'http://example.com/pay?TOKEN=***   *   isRelease: false,
-   *   success(res) {
-   *     console.log('支付成功:', res.message)
-   *   },
-   *   fail(err) {
-   *     console.error('支付失败:', err.errMsg)
-   *   }
+   *   success(res) { console.log('支付成功:', res.suc) },
+   *   fail(err) { console.error('支付失败:', err.errMsg) }
    * })
    * ```
    */

@@ -1,7 +1,7 @@
 {
   "id": "jkr-abc-epay",
   "displayName": "农行e支付插件",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "农行e支付鸿蒙SDK封装，支持农行掌银支付功能",
   "keywords": [
     "农行",

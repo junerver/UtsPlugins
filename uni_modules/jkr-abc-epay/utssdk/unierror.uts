@@ -20,14 +20,16 @@ export const ABCEPayErrors: Map<ABCEPayErrorCode, string> = new Map([
 
 /**
  * 错误对象实现
+ * @param errCode 错误码
+ * @param originalErr 原始错误信息（可选），优先使用原始错误信息
  */
 export class ABCEPayFailImpl extends UniError implements ABCEPayError {
   override errCode: ABCEPayErrorCode
 
-  constructor(errCode: ABCEPayErrorCode) {
+  constructor(errCode: ABCEPayErrorCode, originalErr?: string) {
     super()
     this.errSubject = UniErrorSubject
     this.errCode = errCode
-    this.errMsg = ABCEPayErrors.get(errCode) ?? '未知错误'
+    this.errMsg = originalErr || ABCEPayErrors.get(errCode) || '未知错误'
   }
 }

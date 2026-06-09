@@ -7,6 +7,8 @@
 - 支持农行掌银支付（含中间页面）
 - 支持农行掌银支付（不含中间页面）
 - 检查农行APP安装状态（使用鸿蒙原生API）
+- 检查SDK注入状态（诊断工具）
+- 获取插件版本号（同步）
 - 完整的错误处理机制
 
 ## 平台支持
@@ -49,7 +51,41 @@
 
 **重要**：此插件仅支持鸿蒙平台，使用时必须添加条件编译指令。
 
-### 1. 调起支付（含中间页面）
+### 1. 检查SDK注入状态
+
+```typescript
+// #ifdef APP-HARMONY
+import { checkSDK } from "@/uni_modules/jkr-abc-epay"
+// #endif
+
+function verifySDK() {
+  // #ifdef APP-HARMONY
+  const isReady = checkSDK()
+  if (isReady) {
+    console.log("SDK已正确注入")
+  } else {
+    console.error("SDK注入异常，请检查 HAR 配置")
+  }
+  // #endif
+}
+```
+
+### 2. 获取插件版本号
+
+```typescript
+// #ifdef APP-HARMONY
+import { getVersion } from "@/uni_modules/jkr-abc-epay"
+// #endif
+
+function queryVersion() {
+  // #ifdef APP-HARMONY
+  const version = getVersion()
+  console.log("当前插件版本:", version) // "1.0.4"
+  // #endif
+}
+```
+
+### 3. 调起支付（含中间页面）
 
 ```typescript
 // #ifdef APP-HARMONY
@@ -62,12 +98,10 @@ function handlePay() {
   callPay({
     url: "http://10.230.132.250:8530/mpay/?TOKEN=***    isRelease: false, // 测试环境
     success: (res) => {
-      console.log("支付成功:", res.message)
-      // 处理支付成功逻辑
+      console.log("支付成功:", res.suc)
     },
     fail: (err) => {
       console.error("支付失败:", err.errMsg)
-      // 处理支付失败逻辑
     },
     complete: (res) => {
       console.log("支付完成:", res)
@@ -77,7 +111,7 @@ function handlePay() {
 }
 ```
 
-### 2. 调起支付（不含中间页面）
+### 4. 调起支付（不含中间页面）
 
 ```typescript
 // #ifdef APP-HARMONY
@@ -91,7 +125,7 @@ function handlePayByToken() {
     token: "1111111111111", // 订单号
     isRelease: false, // 测试环境
     success: (res) => {
-      console.log("支付成功:", res.message)
+      console.log("支付成功:", res.suc)
     },
     fail: (err) => {
       console.error("支付失败:", err.errMsg)
@@ -104,7 +138,7 @@ function handlePayByToken() {
 }
 ```
 
-### 3. 检查农行APP安装状态
+### 5. 检查农行APP安装状态
 
 ```typescript
 // #ifdef APP-HARMONY
@@ -126,6 +160,32 @@ function checkAbcApp() {
 ```
 
 ## API 参考
+
+### checkSDK()
+
+检查SDK是否正确注入，用于前端快速验证 HAR 是否正确加载。
+
+#### 检测内容
+
+- ABCEPayApi 对象是否存在
+- callPay / startBankABC 方法是否为函数类型
+- ABCEPayViewPage / ABCEPayWebviewViewPage 页面模块是否可导入
+
+#### 返回值
+
+| 类型 | 说明 |
+|------|------|
+| boolean | SDK是否可用，true=正常，false=异常（同时控制台有详细日志） |
+
+### getVersion()
+
+同步获取插件版本号，便于调试和兼容性检查。
+
+#### 返回值
+
+| 类型 | 说明 |
+|------|------|
+| string | 版本号字符串，如 `"1.0.4"` |
 
 ### callPay(options)
 
@@ -191,7 +251,6 @@ flowchart LR
     subgraph ThirdParty["第三方 APP"]
         SDK["农行掌银<br/>支付 SDK"]
     end
-
     APPServer["第三方 APP<br/>服务端"]
     ABCAPP["农行掌银 APP"]
     ABCServer["农行掌银<br/>服务端"]
@@ -214,12 +273,20 @@ flowchart LR
 4. **错误处理**：建议实现完整的错误处理逻辑，包括用户取消支付的情况
 5. **依赖配置**：确保 `config.json` 中正确配置了 `ABCEPay.har` 依赖
 6. **querySchemes配置**：插件已在 `harmony-configs/entry/src/main/module.json5` 中配置了 `querySchemes: ["bankabc"]`，确保此文件存在
+7. **SDK检测**：建议在应用启动时调用 `checkSDK()` 验证 HAR 是否正确注入
 
 ## 示例项目
 
 参考项目中的示例代码了解完整使用方式。
 
 ## 版本历史
+
+### 1.0.4
+- 新增 `checkSDK()` 方法，用于前端快速验证 HAR 是否正确注入
+- 新增 `getVersion()` 方法，同步返回当前 UTS 插件版本号字符串
+- `callPay` 方法在执行前自动调用 `checkSDK` 进行 SDK 注入检测
+- `ABCEPayFailImpl` 支持可选的原始错误信息参数
+- 统一所有文件的 JSDoc 注释风格
 
 ### 1.0.3
 - 简化 `checkInstall` 方法返回值，直接返回 `boolean`

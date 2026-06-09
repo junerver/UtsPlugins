@@ -1,5 +1,23 @@
 # 更新日志
 
+## [1.0.4] - 2026-06-09
+
+### 新增
+- 新增 `checkSDK()` 方法：用于前端快速验证 HAR 是否正确注入
+  - 检测 ABCEPayApi 对象是否存在
+  - 检测 callPay / startBankABC 方法是否为函数类型
+  - 检测 ABCEPayViewPage / ABCEPayWebviewViewPage 页面模块是否可导入
+  - 输出详细诊断日志到控制台
+- 新增 `getVersion()` 方法：同步返回当前 UTS 插件版本号字符串
+  - 返回值为 `string` 类型，如 `"1.0.4"`
+  - 便于调试和兼容性检查
+- 新增 `PLUGIN_VERSION` 版本常量
+
+### 优化
+- `callPay` 方法在执行前自动调用 `checkSDK` 进行 SDK 注入检测
+- `ABCEPayFailImpl` 构造函数支持可选的 `originalErr` 参数，优先使用原始错误信息
+- 统一所有文件的 JSDoc 注释风格
+
 ## [1.0.3] - 2026-06-05
 
 ### 优化
