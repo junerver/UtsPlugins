@@ -24,7 +24,6 @@ UtsPlugins/
 │       ├── _external/             # 外部文件存储目录（可选）
 │       │   └── module.json5       # 外部配置文件片段
 │       ├── package.json           # 插件配置和版本信息
-│       ├── index.d.ts             # TypeScript 类型声明
 │       ├── readme.md              # 使用文档
 │       ├── changelog.md           # 更新日志
 │       └── utssdk/                # UTS 实现
@@ -81,6 +80,7 @@ UtsPlugins/
 - **不会收录到 `plugins.json` 的 `files` 列表中**
 - 只是为了方便仓库归档，每个插件只存储自己的配置片段
 - 多个插件可以操作同一个目标文件，各自存储自己的片段
+- **CLI 安装后会自动清理** `_external` 目录和 `.uts-plugin.json` 文件
 
 **目录结构示例：**
 ```
