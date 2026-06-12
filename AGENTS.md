@@ -96,6 +96,35 @@ UtsPlugins/
 - **pre-commit hook**: 检测 `uni_modules/` 目录变更，自动运行 `generate-manifest.js`
 - **plugins.json**: 自动生成，包含插件名称、版本、描述、文件列表和外部文件配置
 
+## 远程仓库配置
+
+本项目配置了两个远程仓库，用于同步代码：
+
+| 名称 | 地址 | 说明 |
+|------|------|------|
+| `origin` | `git@github.com:junerver/UtsPlugins.git` | GitHub 主仓库 |
+| `gitee` | `git@gitee.com:junerver/UtsPlugins.git` | Gitee 镜像仓库 |
+
+### 推送规范
+
+推送代码时需要同时推送到两个远程仓库：
+
+```bash
+# 推送代码到双仓库
+git push origin master
+git push gitee master
+
+# 推送标签到双仓库
+git push origin --tags
+git push gitee --tags
+```
+
+或使用一行命令：
+
+```bash
+git push origin master && git push gitee master
+```
+
 ## 相关项目
 
 - [uts-plugin-cli](https://github.com/junerver/uts-plugin-cli) - 插件管理工具
