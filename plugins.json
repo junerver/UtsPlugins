@@ -1,11 +1,15 @@
 {
   "_comment": "此文件由 scripts/generate-manifest.js 自动生成，请勿手动编辑",
-  "generated_at": "2026-06-09T09:20:09.613Z",
+  "generated_at": "2026-06-12T03:25:22.121Z",
   "plugins": {
     "jkr-abc-epay": {
       "description": "农行e支付鸿蒙SDK封装，支持农行掌银支付功能",
       "version": "1.0.4",
       "files": [
+        {
+          "path": ".uts-plugin.json",
+          "hash": "2e81181bf51b1e353cfc1808a3b3dbeb"
+        },
         {
           "path": "changelog.md",
           "hash": "58704708fab383999adf69c997d25e03"
@@ -41,6 +45,17 @@
         {
           "path": "utssdk/unierror.uts",
           "hash": "0928825b2424d5ca9c7c2aec1b94ab77"
+        }
+      ],
+      "externalFiles": [
+        {
+          "source": "module.json5",
+          "target": "harmony-configs/entry/src/main/module.json5",
+          "strategy": "merge",
+          "description": "配置querySchemes，方便查找是否安装农行epay。",
+          "arrayKeys": [
+            "module.querySchemes"
+          ]
         }
       ]
     }

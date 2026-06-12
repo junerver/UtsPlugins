@@ -1,0 +1,13 @@
+{
+  "externalFiles": [
+    {
+      "source": "module.json5",
+      "target": "harmony-configs/entry/src/main/module.json5",
+      "strategy": "merge",
+      "description": "配置querySchemes，方便查找是否安装农行epay。",
+      "arrayKeys": [
+        "module.querySchemes"
+      ]
+    }
+  ]
+}

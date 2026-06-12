@@ -20,6 +20,9 @@ npx @junerver/uts-plugin-cli install jkr-abc-epay
 UtsPlugins/
 ├── uni_modules/                    # 插件目录
 │   └── jkr-abc-epay/              # 农行e支付插件
+│       ├── .uts-plugin.json       # 外部文件声明（可选）
+│       ├── _external/             # 外部文件存储目录（可选）
+│       │   └── module.json5       # 外部配置文件片段
 │       ├── package.json           # 插件配置和版本信息
 │       ├── index.d.ts             # TypeScript 类型声明
 │       ├── readme.md              # 使用文档
@@ -40,6 +43,60 @@ UtsPlugins/
 ├── package.json                    # 项目配置
 └── README.md                       # 本文件
 ```
+
+## 特殊文件说明
+
+### .uts-plugin.json（外部文件声明）
+
+某些插件需要修改项目根目录下的配置文件（如鸿蒙配置）。`.uts-plugin.json` 用于声明这些外部关联文件：
+
+```json
+{
+  "externalFiles": [
+    {
+      "source": "module.json5",
+      "target": "harmony-configs/entry/src/main/module.json5",
+      "strategy": "merge",
+      "description": "配置 querySchemes",
+      "arrayKeys": ["module.querySchemes"]
+    }
+  ]
+}
+```
+
+| 字段 | 说明 |
+|------|------|
+| `source` | 源文件路径（相对于插件的 `_external` 目录） |
+| `target` | 目标文件路径（相对于项目根目录） |
+| `strategy` | 处理策略：`merge`（合并）、`overwrite`（覆盖） |
+| `description` | 文件描述（可选） |
+| `arrayKeys` | 需要去重追加的数组键名，支持嵌套路径如 `module.querySchemes`。为空时合并全部字段 |
+
+### _external 目录（外部文件存储）
+
+`_external` 是约定的外部文件存储目录，用于存放需要合并到项目中的配置文件片段。
+
+**特点：**
+- 存储插件需要的外部配置文件
+- **不会收录到 `plugins.json` 的 `files` 列表中**
+- 只是为了方便仓库归档，每个插件只存储自己的配置片段
+- 多个插件可以操作同一个目标文件，各自存储自己的片段
+
+**目录结构示例：**
+```
+uni_modules/jkr-abc-epay/
+├── _external/
+│   └── module.json5        # 只包含 querySchemes 配置片段
+└── .uts-plugin.json        # 声明如何合并到项目
+```
+
+## 路径解析规则
+
+| 字段 | 路径起点 | 示例 |
+|------|----------|------|
+| `files[].path` | 插件目录 | `utssdk/app-harmony/index.uts` |
+| `externalFiles[].source` | 插件的 `_external` 目录 | `module.json5` |
+| `externalFiles[].target` | 项目根目录 | `harmony-configs/entry/src/main/module.json5` |
 
 ## 插件清单
 

@@ -33,6 +33,11 @@ function getFilesRecursive(dir, prefix = '') {
   const items = fs.readdirSync(dir)
 
   for (const item of items) {
+    // 跳过 _external 目录（外部文件存储目录，不收录到 files 中）
+    if (item === '_external') {
+      continue
+    }
+    
     const fullPath = path.join(dir, item)
     const relativePath = prefix ? `${prefix}/${item}` : item
     const stat = fs.statSync(fullPath)
@@ -76,6 +81,24 @@ function getPluginInfo(pluginDir) {
 }
 
 /**
+ * 获取插件外部文件配置
+ * @param {string} pluginDir - 插件目录路径
+ * @returns {object|null} 外部文件配置
+ */
+function getExternalFilesConfig(pluginDir) {
+  const configPath = path.join(pluginDir, '.uts-plugin.json')
+  if (!fs.existsSync(configPath)) {
+    return null
+  }
+  try {
+    return JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+  } catch (error) {
+    console.warn(`警告：无法解析 ${configPath}`)
+    return null
+  }
+}
+
+/**
  * 生成 plugins.json
  */
 function generateManifest() {
@@ -102,12 +125,19 @@ function generateManifest() {
     const pluginDir = path.join(UNI_MODULES_DIR, pluginName)
     const pluginInfo = getPluginInfo(pluginDir)
     const files = getFilesRecursive(pluginDir)
+    const externalConfig = getExternalFilesConfig(pluginDir)
 
-    manifest.plugins[pluginName] = {
+    const pluginData = {
       description: pluginInfo?.description || '-',
       version: pluginInfo?.version || '1.0.0',
       files: files
     }
+
+    if (externalConfig && externalConfig.externalFiles) {
+      pluginData.externalFiles = externalConfig.externalFiles
+    }
+
+    manifest.plugins[pluginName] = pluginData
 
     console.log(`✓ ${pluginName} (${files.length} files)`)
   }
